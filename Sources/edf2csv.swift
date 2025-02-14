@@ -25,7 +25,7 @@ struct edf2csv: ParsableCommand {
     @Option(name: .long, help: "Aggregation method: mean, mode, max, min.")
     var aggregate: AggregateMethod = .mean
 
-    @Option(name: .long, help: "CSV delimiter character (default: ',').")
+    @Option(name: .long, help: "CSV delimiter character.")
     var delimiter: String = ","
 
     @Flag(name: .long, help: "Do not include a header row.")
@@ -44,7 +44,7 @@ struct edf2csv: ParsableCommand {
         outputStream.open()
         defer { outputStream.close() }
 
-        let signalInfos = edf.signalInfos
+        let signalInfos = try edf.signalInfos
 
         if !noHeader {
             let labels = ["timestamp"] + signalInfos.filter({ !$0.isAnnotation }).map(\.label)
@@ -53,10 +53,10 @@ struct edf2csv: ParsableCommand {
         }
 
         for row  in 0 ..< edf.header.numberOfRecords {
-            var components: [String] = ["\(edf.timestamp(for: row))"]
+            var components: [String] = ["\(try edf.timestamp(for: row))"]
             for column in 0 ..< edf.header.numberOfSignals {
                 if signalInfos[column].isAnnotation { continue }
-                if let values = edf.record(for: column, at: row), !values.isEmpty,
+                if let values = try edf.record(for: column, at: row), !values.isEmpty,
                    let value = values.aggregate(with: aggregate) {
                     components.append("\(value)")
                 } else {
@@ -97,8 +97,8 @@ extension OutputStream {
 }
 
 extension EDFFile {
-    func timestamp(for row: Int) -> Double {
-        if let annotation = annotation(at: row),
+    func timestamp(for row: Int) throws -> Double {
+        if let annotation = try annotation(at: row),
            let timestamp = annotation.timestamp {
             return timestamp
         }

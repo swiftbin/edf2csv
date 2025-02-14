@@ -1,5 +1,5 @@
 {
-  "originHash" : "bf57eed07d32a1614e07edea21b7fb5a0d9d42a8fc451cd330625a59165180f1",
+  "originHash" : "d7d717283c7a8df35b95ff7e31a046947e9f5e4bd6414eeba391de4a0d3875fb",
   "pins" : [
     {
       "identity" : "swift-argument-parser",
@@ -15,7 +15,16 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/p-x9/swift-edf.git",
       "state" : {
-        "revision" : "1c5a5a243dbf6317fbd3d4d62785cbd886a7485b",
+        "revision" : "1bd6e129cd4a1f398b9002454113c20799f842c3",
+        "version" : "0.2.0"
+      }
+    },
+    {
+      "identity" : "swift-fileio",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/p-x9/swift-fileio.git",
+      "state" : {
+        "revision" : "63ad61e7d103b800ca40ea95b0b3516474fc42e2",
         "version" : "0.1.0"
       }
     }
